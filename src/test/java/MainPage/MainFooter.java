@@ -22,9 +22,6 @@ public class MainFooter {
         this.driver = driver;
     }
 
-    // Закрыть окно выбора города
-    @FindBy(xpath = "//*[@id='closeSelectCityModal']")
-    private WebElement cityBtnClose;
 
     // Политика обработки персональных данных
     @FindBy(xpath = "(//*[@class='footer__politic']//a)[1]")
@@ -63,12 +60,6 @@ public class MainFooter {
     private WebElement copyright;
 
 
-    public void closeModalCity() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(cityBtnClose));
-        cityBtnClose.click();
-    }
-
     public void fromFooterToPersonalPolicy() {
         Set<String> oldWindowsSet = driver.getWindowHandles();
         String oldHandles = "";
@@ -85,7 +76,7 @@ public class MainFooter {
             newHandle = s;
         }
         driver.switchTo().window(newHandle);
-        String expectedUrl = "https://dev.allfdm.ru/docs/personal.pdf?v3";
+        String expectedUrl = "https://allfdm.ru/docs/personal.pdf?v3";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход к файлу политики обработки персональных данных не осуществлен",
                 expectedUrl, actualUrl);
@@ -109,7 +100,7 @@ public class MainFooter {
             newHandle = s;
         }
         driver.switchTo().window(newHandle);
-        String expectedUrl = "https://dev.allfdm.ru/docs/privacy.pdf?v3";
+        String expectedUrl = "https://allfdm.ru/docs/privacy.pdf?v3";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход к файлу политики конфиденциальности не осуществлен",
                 expectedUrl, actualUrl);
@@ -133,7 +124,7 @@ public class MainFooter {
             newHandle = s;
         }
         driver.switchTo().window(newHandle);
-        String expectedUrl = "https://dev.allfdm.ru/docs/offer_legal_entity.pdf";
+        String expectedUrl = "https://allfdm.ru/docs/offer_legal_entity.pdf";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход к файлу публичной оферты для юр. лиц не осуществлен",
                 expectedUrl, actualUrl);
@@ -157,7 +148,7 @@ public class MainFooter {
             newHandle = s;
         }
         driver.switchTo().window(newHandle);
-        String expectedUrl = "https://dev.allfdm.ru/offer.pdf";
+        String expectedUrl = "https://allfdm.ru/offer.pdf";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход к файлу публичной оферты для физ. лиц не осуществлен",
                 expectedUrl, actualUrl);

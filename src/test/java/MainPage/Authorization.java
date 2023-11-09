@@ -13,8 +13,8 @@ import java.time.Duration;
 
 public class Authorization {
 
-    private static String code = "1111";
-    private static String[] numbers = {"9", "9", "6", "4", "5", "2", "1", "4", "8", "8"};
+    private static String code = "4836";
+    private static String[] numbers = {"9", "9", "9", "9", "9", "9", "9", "9", "9", "9"};
     private static String expectedNumberInAccount = "+7 (" + numbers[0] + numbers[1] + numbers[2] + ") " +
             numbers[3] + numbers[4] + numbers[5] + "-" + numbers[6] + numbers[7] + "-" + numbers[8] + numbers[9];
 
@@ -25,9 +25,6 @@ public class Authorization {
     }
 
     // Локаторы
-    @FindBy(xpath = "//*[@id='closeSelectCityModal']")
-    private WebElement cityBtnClose;
-
     @FindBy(xpath = "//*[@class='header__user-links']")
     private WebElement loginBtn;
 
@@ -51,12 +48,6 @@ public class Authorization {
 
     @FindBy(xpath = "(//*[@class='show-button card-button'])[1]//a")
     private WebElement showHidden;
-
-    public void closeModalCity() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(cityBtnClose));
-        cityBtnClose.click();
-    }
 
     public void openAuth() {
         loginBtn.click();

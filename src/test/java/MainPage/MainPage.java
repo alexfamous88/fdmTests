@@ -23,11 +23,6 @@ public class MainPage {
 
     // Локаторы
 
-    // Модальное окно выбора города
-    @FindBy(xpath = "//*[@id='closeSelectCityModal']")
-    private WebElement cityBtnClose;
-
-
     // Промо-раздел
     @FindBy(xpath = "//*[@class='item promo-1']")
     private WebElement catalogFromPromo;
@@ -107,15 +102,13 @@ public class MainPage {
     @FindBy(xpath = "//a[contains(@class, 'active')]")
     private WebElement activeFactory;
 
+    // Локатор перехода в каталог
+    @FindBy(xpath = "//h1[contains(text(), 'Типы материалов')]")
+    private WebElement catalogLocator;
 
-    public void closeModalCity() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(cityBtnClose));
-        cityBtnClose.click();
-    }
 
     public void fromPromoToCatalog() {
-        String expectedUrl = "https://dev.allfdm.ru/material/select";
+        String expectedUrl = "https://allfdm.ru/material/select";
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOf(catalogFromPromo));
         catalogFromPromo.click();
@@ -227,7 +220,7 @@ public class MainPage {
     }
 
     public void registrationFromCrafts() {
-        String expectedUrl = "https://dev.allfdm.ru/personal/registration";
+        String expectedUrl = "https://allfdm.ru/personal/registration";
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.xpath("//*[@class='main-crafts']")));
         regFromCrafts.click();
@@ -237,24 +230,28 @@ public class MainPage {
     }
 
     public void from3stepsToCatalog() {
-        String expectedUrl = "https://dev.allfdm.ru/material/select";
+        String expectedTitle = "Типы материалов";
         JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         js.executeScript("arguments[0].scrollIntoView();", driver.findElement(By.xpath("//*[@class='main-steps']")));
 
         catalogFromStep1.click();
+        wait.until(ExpectedConditions.visibilityOf(catalogLocator));
         Assert.assertEquals("Переход в каталог из блока \"Рассчитайте заказ в 3 простых шага\" не осуществлен",
-                expectedUrl, driver.getCurrentUrl());
+                expectedTitle, catalogLocator.getText().strip());
         driver.navigate().back();
 
         step2.click();
         catalogFromStep2.click();
+        wait.until(ExpectedConditions.visibilityOf(catalogLocator));
         Assert.assertEquals("Переход в каталог из блока \"Рассчитайте заказ в 3 простых шага\" не осуществлен",
-                expectedUrl, driver.getCurrentUrl());
+                expectedTitle, catalogLocator.getText().strip());
         driver.navigate().back();
 
         step3.click();
         catalogFromStep3.click();
+        wait.until(ExpectedConditions.visibilityOf(catalogLocator));
         Assert.assertEquals("Переход в каталог из блока \"Рассчитайте заказ в 3 простых шага\" не осуществлен",
-                expectedUrl, driver.getCurrentUrl());
+                expectedTitle, catalogLocator.getText().strip());
     }
 }

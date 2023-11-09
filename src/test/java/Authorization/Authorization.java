@@ -12,8 +12,8 @@ import java.time.Duration;
 
 public class Authorization {
 
-    private static String code = "1111";
-    private static String[] numbers = {"9", "9", "6", "4", "5", "2", "1", "4", "8", "8"};
+    private static String code = "4836";
+    private static String[] numbers = {"9", "9", "9", "9", "9", "9", "9", "9", "9", "9"};
 
     public WebDriver driver;
     public Authorization(WebDriver driver) {

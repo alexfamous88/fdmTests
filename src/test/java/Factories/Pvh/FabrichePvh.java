@@ -80,6 +80,18 @@ public class FabrichePvh {
     @FindBy(xpath = "//*[@id='changeFacadeType']")
     private WebElement changeFacadeType;
 
+    // Локатор похожих предложений
+    @FindBy(xpath = "(//*[@class='bold'])[4]")
+    private WebElement analogsLocator;
+
+    // Кнопка закрытия окна аналогов
+    @FindBy(xpath = "//*[@class='modal-dialog default-modal-form comparison-modal']//*[@class='close']")
+    private WebElement closeAnalogs;
+
+    // Локатор отсутствия похожих предложений
+    @FindBy(xpath = "//*[contains(text(), 'Похожих предложений не найдено!')]")
+    private WebElement analogsIsMissing;
+
 
     public void addToBasket() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
@@ -99,43 +111,55 @@ public class FabrichePvh {
 
         // Выбор прямых фасадов
         fasadyPryamye.click();
+
+        // Выбор декора
         try {
-            wait.until(ExpectedConditions.visibilityOf(changeFacadeType));
-            changeFacadeType.click();
-        } catch (TimeoutException e) {
-        }
-        finally {
-            // Выбор декора
-            wait.until(ExpectedConditions.visibilityOf(decor));
             decor.click();
             characteristicsContinueBtn.click();
-
-            // Выбор фрезеровки
-            milling.click();
+        } catch (NoSuchElementException e) {
+            changeFacadeType.click();
+            decor.click();
             characteristicsContinueBtn.click();
+        }
 
-            // Установка размерности фасада
-            wait.until(ExpectedConditions.visibilityOf(calculateBtn));
-            height.sendKeys("1000");
-            width.sendKeys("100");
-            calculateBtn.click();
+        // Выбор фрезеровки
+        milling.click();
+        characteristicsContinueBtn.click();
 
-            js.executeScript("arguments[0].scrollIntoView();",
-                    driver.findElement(By.xpath("//*[@id='found-cheaper']")));
+        // Установка размерности фасада
+        wait.until(ExpectedConditions.visibilityOf(calculateBtn));
+        height.sendKeys("1000");
+        width.sendKeys("100");
+        calculateBtn.click();
 
+        js.executeScript("arguments[0].scrollIntoView();",
+                driver.findElement(By.xpath("//*[@id='found-cheaper']")));
+
+        // Ждем прогрузки похожих предложений
+        try {
             // Кликаем "Добавить в корзину"
             addToBasketBtn.click();
 
             // Перейти в корзину
+            wait.until(ExpectedConditions.elementToBeClickable(toBasketBtn));
             toBasketBtn.click();
 
-            // Проверяем, действительно ли перешли в корзину
-            String expectedUrl = "https://dev.allfdm.ru/main/basket/";
-            String actualUrl = driver.getCurrentUrl();
-            Assert.assertEquals("Переход в Корзину не осуществлен", expectedUrl, actualUrl);
+        } catch (ElementClickInterceptedException e) {
+            // Закрываем окно с аналогами
+            wait.until(ExpectedConditions.visibilityOf(closeAnalogs));
+            closeAnalogs.click();
 
-            // Ждем загрузки БЗ в корзине
-            wait.until(ExpectedConditions.visibilityOf(basketList));
+            // Перейти в корзину
+            wait.until(ExpectedConditions.visibilityOf(toBasketBtn));
+            toBasketBtn.click();
         }
+
+        // Проверяем, действительно ли перешли в корзину
+        String expectedUrl = "https://allfdm.ru/main/basket/";
+        String actualUrl = driver.getCurrentUrl();
+        Assert.assertEquals("Переход в Корзину не осуществлен", expectedUrl, actualUrl);
+
+        // Ждем загрузки БЗ в корзине
+        wait.until(ExpectedConditions.visibilityOf(basketList));
     }
 }

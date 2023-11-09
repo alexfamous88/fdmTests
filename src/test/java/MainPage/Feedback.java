@@ -66,15 +66,11 @@ public class Feedback {
     private WebElement personalLink;
 
 
-    public void closeModalCity() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(cityBtnClose));
-        cityBtnClose.click();
-    }
-
     public void scrollToFeedbackForm() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         JavascriptExecutor js = ((JavascriptExecutor) driver);
         js.executeScript("arguments[0].scrollIntoView();", feedbackForm);
+        wait.until(ExpectedConditions.visibilityOf(feedbackForm));
     }
 
     public void setName(String name) {
@@ -123,7 +119,7 @@ public class Feedback {
             newHandle = s;
         }
         driver.switchTo().window(newHandle);
-        String expectedUrl = "https://dev.allfdm.ru/docs/personal.pdf?v3";
+        String expectedUrl = "https://allfdm.ru/docs/personal.pdf?v3";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход к файлу политики обработки персональных данных не осуществлен",
                 expectedUrl, actualUrl);

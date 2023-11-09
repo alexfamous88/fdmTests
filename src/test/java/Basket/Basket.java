@@ -1,15 +1,13 @@
 package Basket;
 
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.security.Key;
 import java.time.Duration;
 
 public class Basket {
@@ -82,6 +80,14 @@ public class Basket {
     @FindBy(xpath = "//*[@class='basket-header-link']")
     private WebElement toBasketFromHeader;
 
+    // Кнопка удаления БЗ из списка БЗ
+    @FindBy(xpath = "(//*[@class='order-edit-block'])[1]//a[3]")
+    private WebElement removeOrderFromOrders;
+
+    // Корзина
+    @FindBy(xpath = "//*[@class='basket-header-link']")
+    private WebElement basket;
+
 
     // Посмотреть бланк заказа
     public void showBlank() {
@@ -98,11 +104,11 @@ public class Basket {
 
         blankEditBtn.click();
 
-        String regexUrl = "https://dev.allfdm.ru/order/basket/[0-9]*";
+        String regexUrl = "https://allfdm.ru/order/basket/[0-9]*";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertTrue("Переход на страницу редактирования БЗ не осуществлен", actualUrl.matches(regexUrl));
 
-        driver.navigate().to("https://dev.allfdm.ru/main/basket/");
+        driver.navigate().to("https://allfdm.ru/main/basket/");
 
         // Ждем загрузки БЗ в корзине
         wait.until(ExpectedConditions.visibilityOf(basketList));
@@ -135,13 +141,34 @@ public class Basket {
         String expectedMessageAfterRemove = "Ваша корзина пуста!";
         String actualMessageAfterRemove = basketIsEmpty.getText();
         Assert.assertEquals("Товар не удален из корзины", expectedMessageAfterRemove, actualMessageAfterRemove);
+
+        ordersFromNavInBasket.click();
+    }
+
+    // Удаление всех БЗ из списка БЗ
+    public void clearOrders() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        basket.click();
+
+        ordersFromNavInBasket.click();
+
+        try {
+            while (removeOrderFromOrders.isDisplayed()) {
+                removeOrderFromOrders.click();
+                driver.switchTo().alert().accept();
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Все бланки удалены");
+        }
+
     }
 
     // Переход из корзины к бланкам заказов
     public void fromBasketToOrders() {
         toBasketFromHeader.click();
         ordersFromNavInBasket.click();
-        var expectedUrl = "https://dev.allfdm.ru/orders";
+        var expectedUrl = "https://allfdm.ru/orders";
         var actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход к бланкам заказов не осуществлен", expectedUrl, actualUrl);
     }
@@ -150,7 +177,7 @@ public class Basket {
     public void fromBasketToPaidOrders() {
         toBasketFromHeader.click();
         paidOrdersFromNavInBasket.click();
-        var expectedUrl = "https://dev.allfdm.ru/orders/paid";
+        var expectedUrl = "https://allfdm.ru/orders/paid";
         var actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход к бланкам заказов не осуществлен", expectedUrl, actualUrl);
     }
@@ -159,7 +186,7 @@ public class Basket {
     public void fromBasketToSamples() {
         toBasketFromHeader.click();
         samplesFromNavInBasket.click();
-        var expectedUrl = "https://dev.allfdm.ru/shop/sample-orders";
+        var expectedUrl = "https://allfdm.ru/shop/sample-orders";
         var actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход к бланкам заказов не осуществлен", expectedUrl, actualUrl);
     }

@@ -68,19 +68,10 @@ public class MainHeader {
     @FindBy(xpath = "//*[@class='g-icon-text']//a[contains(text(),'Выход')]")
     private WebElement logOut;
 
-    @FindBy(xpath = "//*[@id='closeSelectCityModal']")
-    private WebElement cityBtnClose;
-
-
-    public void closeModalCity() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(cityBtnClose));
-        cityBtnClose.click();
-    }
 
     // Перейти в Каталог
     public void fromNavToCatalog() {
-        String expectedUrl = "https://dev.allfdm.ru/material/select";
+        String expectedUrl = "https://allfdm.ru/material/select";
         catalogNav.click();
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход в раздел \"Каталог\" не осуществлен", expectedUrl, actualUrl);
@@ -89,7 +80,7 @@ public class MainHeader {
 
     // Перейти в Доставка
     public void fromNavToDelivery() {
-        String expectedUrl = "https://dev.allfdm.ru/dostavka-i-oplata";
+        String expectedUrl = "https://allfdm.ru/dostavka-i-oplata";
         deliveryNav.click();
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход в раздел \"Доставка\" не осуществлен", expectedUrl, actualUrl);
@@ -98,7 +89,7 @@ public class MainHeader {
 
     // Перейти в Оплата
     public void fromNavToPayment() {
-        String expectedUrl = "https://dev.allfdm.ru/oplata";
+        String expectedUrl = "https://allfdm.ru/oplata";
         paymentNav.click();
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход в раздел \"Оплата\" не осуществлен", expectedUrl, actualUrl);
@@ -107,7 +98,7 @@ public class MainHeader {
 
     // Перейти в Возврат
     public void fromNavToReturning() {
-        String expectedUrl = "https://dev.allfdm.ru/vozvrat";
+        String expectedUrl = "https://allfdm.ru/vozvrat";
         returningNav.click();
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход в раздел \"Возврат\" не осуществлен", expectedUrl, actualUrl);
@@ -128,7 +119,7 @@ public class MainHeader {
     // Перейти на страницу регистрации
     public void fromNavToRegistration() {
         regNav.click();
-        String expectedUrl = "https://dev.allfdm.ru/personal/vue/registration/";
+        String expectedUrl = "https://allfdm.ru/personal/registration";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход на страницу регистрации из хэдера не осуществлен", expectedUrl, actualUrl);
     }
@@ -136,7 +127,7 @@ public class MainHeader {
     // Перейти в корзину
     public void fromNavToBasket() {
         basket.click();
-        String expectedUrl = "https://dev.allfdm.ru/main/basket/";
+        String expectedUrl = "https://allfdm.ru/main/basket/";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход в Корзину из хэдера не осуществлен", expectedUrl, actualUrl);
         driver.navigate().back();
@@ -145,7 +136,7 @@ public class MainHeader {
     // Перейти к бланкам заказов
     public void fromNavToOrders() {
         orders.click();
-        String expectedUrl = "https://dev.allfdm.ru/orders";
+        String expectedUrl = "https://allfdm.ru/orders";
         String actualUrl = driver.getCurrentUrl();
         Assert.assertEquals("Переход в Корзину из хэдера не осуществлен", expectedUrl, actualUrl);
         driver.navigate().back();
